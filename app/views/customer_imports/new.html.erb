@@ -1,0 +1,8 @@
+<p><%= link_to "&larr; Back".html_safe, app_path %> to list of customers.</p>
+
+<h1>Import Customers</h1>
+
+<%= form_with scope: :customer_import, url: app_customer_imports_path, method: :post, local: true do |form| %>
+  <%= form.file_field :file %>
+  <%= form.submit "Import" %>
+<% end %>
