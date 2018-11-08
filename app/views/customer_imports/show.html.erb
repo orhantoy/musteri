@@ -1,6 +1,6 @@
 <p><%= link_to "&larr; Back".html_safe, app_path %> to list of customers.</p>
 
-<h1>Importing <code>import-1.csv</code></h1>
+<h1>Importing <code><%= @customer_import.uploaded_file.filename %></code></h1>
 
 <p>
   <%= link_to "Invalid data", '#' %> (4)
