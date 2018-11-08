@@ -2,6 +2,8 @@ require 'test_helper'
 require 'csv'
 
 class CustomerImportsControllerTest < ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper
+
   test "uploading CSV file creates a customer import" do
     space = Space.create!(slug: "ZBX")
 
@@ -43,14 +45,16 @@ class CustomerImportsControllerTest < ActionDispatch::IntegrationTest
       csv_file.rewind
 
       customer_import.uploaded_file.attach(io: csv_file, filename: "upload.csv")
-      customer_import.save!
+      perform_enqueued_jobs { customer_import.save! }
     ensure
       csv_file.close
       csv_file.unlink
     end
 
     assert_difference "space.customers.count", 2 do
-      post finalize_app_customer_import_url(tenant: space.slug, id: customer_import.id)
+      perform_enqueued_jobs do
+        post finalize_app_customer_import_url(tenant: space.slug, id: customer_import.id)
+      end
     end
   end
 end

@@ -25,9 +25,9 @@ class CustomerImportsController < ApplicationController
   end
 
   def finalize
-    @customer_import = current_space.customer_imports.find(params[:id])
-    @customer_import.finalize!
+    customer_import = current_space.customer_imports.find(params[:id])
+    FinalizeCustomerImportJob.perform_later(customer_import)
 
-    redirect_to url_for(action: "show", id: @customer_import.id)
+    redirect_to url_for(action: "show", id: customer_import.id)
   end
 end

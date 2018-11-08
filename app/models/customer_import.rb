@@ -55,8 +55,10 @@ class CustomerImport < ApplicationRecord
   end
 
   def finalize!
-    rows.each do |row|
-      space.customers.create!(row.as_customer_attributes)
+    transaction do
+      rows.each do |row|
+        space.customers.create!(row.as_customer_attributes)
+      end
     end
   end
 
