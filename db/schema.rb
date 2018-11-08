@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_08_220931) do
+ActiveRecord::Schema.define(version: 2018_11_08_223743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,17 @@ ActiveRecord::Schema.define(version: 2018_11_08_220931) do
     t.datetime "updated_at", null: false
     t.bigint "space_id", null: false
     t.index ["space_id"], name: "index_customer_imports_on_space_id"
+  end
+
+  create_table "customers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "space_id", null: false
+    t.string "name", null: false
+    t.string "address"
+    t.string "city"
+    t.string "country_code"
+    t.index ["space_id"], name: "index_customers_on_space_id"
   end
 
   create_table "spaces", force: :cascade do |t|

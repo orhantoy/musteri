@@ -11,4 +11,11 @@ class CustomerImportsController < ApplicationController
   def show
     @customer_import = current_space.customer_imports.find(params[:id])
   end
+
+  def finalize
+    @customer_import = current_space.customer_imports.find(params[:id])
+    @customer_import.finalize!
+
+    redirect_to url_for(action: "show", id: @customer_import.id)
+  end
 end
