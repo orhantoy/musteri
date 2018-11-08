@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_08_223743) do
+ActiveRecord::Schema.define(version: 2018_11_08_233451) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,10 +36,22 @@ ActiveRecord::Schema.define(version: 2018_11_08_223743) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "customer_import_rows", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "owner_id", null: false
+    t.json "parsed_data"
+    t.boolean "with_errors", default: false, null: false
+    t.boolean "duplicated", default: false, null: false
+    t.string "error_message"
+    t.index ["owner_id"], name: "index_customer_import_rows_on_owner_id"
+  end
+
   create_table "customer_imports", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "space_id", null: false
+    t.datetime "parsed_at"
     t.index ["space_id"], name: "index_customer_imports_on_space_id"
   end
 

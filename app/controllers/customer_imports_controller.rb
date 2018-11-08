@@ -10,6 +10,18 @@ class CustomerImportsController < ApplicationController
 
   def show
     @customer_import = current_space.customer_imports.find(params[:id])
+    @rows = @customer_import.rows_of_type(params[:row_type])
+
+    case
+    when @customer_import.parsed_at?
+      if params[:row_type].present?
+        render
+      else
+        redirect_to url_for(row_type: "valid")
+      end
+    else
+      render :parsing
+    end
   end
 
   def finalize

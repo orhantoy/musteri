@@ -3,10 +3,15 @@
 <h1>Importing <code><%= @customer_import.uploaded_file.filename %></code></h1>
 
 <p>
-  <%= link_to "Invalid data", '#' %> (4)
-  <%= link_to "Duplicate data", '#' %> (2)
-  <%= link_to "Ignored data", '#' %> (0)
-  <%= link_to "Valid data", '#' %> (52)
+  <% if @customer_import.rows_with_errors.count > 0 %>
+    <%= link_to "Errors", url_for(row_type: "errors") %> (<%= @customer_import.rows_with_errors.count %>)
+  <% end %>
+
+  <% if @customer_import.rows_with_duplicates.count > 0 %>
+    <%= link_to "Duplicates", url_for(row_type: "duplicates") %> (<%= @customer_import.rows_with_duplicates.count %>)
+  <% end %>
+
+  <%= link_to "Valid data", url_for(row_type: "valid") %> (<%= @customer_import.valid_rows.count %>)
 </p>
 
 <table class="plain-table">
@@ -19,15 +24,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Shape x SitDown</td>
-      <td>
-        Njalsgade 17A<br>
-        2300 København S<br>
-        Denmark
-      </td>
-      <td>Orhan Toy</td>
-      <td>orhan.toy@cargoflux.com</td>
-    </tr>
+    <% @rows.each do |row| %>
+      <tr>
+        <td><%= row.customer_name %></td>
+        <td>
+          <%= row.address %><br>
+          <%= row.city %><br>
+          <%= row.country %>
+        </td>
+        <td>-</td>
+        <td>-</td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
