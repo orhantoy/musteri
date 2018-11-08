@@ -15,7 +15,7 @@ class CustomerImportsControllerTest < ActionDispatch::IntegrationTest
 
       csv_file.rewind
 
-      assert_difference "CustomerImport.count" do
+      assert_difference "space.customer_imports.count" do
         post app_customer_imports_url(tenant: space.slug), params: { import_file: fixture_file_upload(csv_file.path, 'text/csv') }
       end
     ensure
