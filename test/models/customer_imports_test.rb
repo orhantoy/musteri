@@ -4,7 +4,7 @@ class CustomerImportsTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
   test "parsing rows" do
-    space = Space.create!(slug: "test")
+    space = Space.create!(title: "Zeobix", slug: "ZBX")
     customer_import = space.customer_imports.new
 
     begin

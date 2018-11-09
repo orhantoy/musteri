@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_09_100534) do
+ActiveRecord::Schema.define(version: 2018_11_08_220931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_100534) do
     t.boolean "with_errors", default: false, null: false
     t.boolean "duplicated", default: false, null: false
     t.string "error_message"
+    t.datetime "finalized_at"
     t.index ["owner_id"], name: "index_customer_import_rows_on_owner_id"
   end
 
@@ -51,6 +52,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_100534) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "space_id", null: false
+    t.datetime "started_parsing_at"
     t.datetime "parsed_at"
     t.datetime "started_finalizing_at"
     t.datetime "finalized_at"
@@ -71,6 +73,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_100534) do
   create_table "spaces", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title", null: false
     t.string "slug", null: false
     t.index ["slug"], name: "index_spaces_on_slug", unique: true
   end

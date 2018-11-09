@@ -5,7 +5,7 @@ class CustomerImportsControllerTest < ActionDispatch::IntegrationTest
   include ActiveJob::TestHelper
 
   test "uploading CSV file creates a customer import" do
-    space = Space.create!(slug: "ZBX")
+    space = Space.create!(title: "Zeobix", slug: "ZBX")
 
     begin
       csv_file = Tempfile.new(["upload", ".csv"])
@@ -30,7 +30,7 @@ class CustomerImportsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "finalizing a customer import will create customers" do
-    space = Space.create!(slug: "ZBX")
+    space = Space.create!(title: "Zeobix", slug: "ZBX")
     customer_import = space.customer_imports.new
 
     begin
