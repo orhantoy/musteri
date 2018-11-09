@@ -46,7 +46,8 @@ class CustomerImport < ApplicationRecord
 
       rows
         .where("parsed_data->>'customer_name' IN (?)", duplicate_customer_names)
-        .update_all(duplicated: true)
+        .where(with_errors: false)
+        .update_all(duplicated: true, error_message: "duplicate_in_file")
 
       touch(:parsed_at)
     end

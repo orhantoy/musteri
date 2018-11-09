@@ -31,6 +31,9 @@ class CustomerImportTest < ActiveSupport::TestCase
     assert_equal 1, customer_import.rows_with_errors.count
     assert_equal 2, customer_import.rows_with_duplicates.count
     assert_equal 1, customer_import.valid_rows.count
+
+    assert_equal ["blank_name"], customer_import.rows_with_errors.pluck(:error_message)
+    assert_equal ["duplicate_in_file", "duplicate_in_file"], customer_import.rows_with_duplicates.pluck(:error_message)
   end
 
   test "finalizing import" do

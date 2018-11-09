@@ -35,7 +35,10 @@ class CustomerImportRow < ApplicationRecord
   private
 
   def check_for_errors
-    self.with_errors = parsed_data["customer_name"].blank?
+    if parsed_data["customer_name"].blank?
+      self.with_errors = true
+      self.error_message ||= "blank_name"
+    end
 
     true
   end
