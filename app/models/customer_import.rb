@@ -6,8 +6,6 @@ class CustomerImport < ApplicationRecord
 
   has_one_attached :uploaded_file
 
-  after_create_commit :parse_in_background
-
   def rows_with_errors
     rows.with_errors
   end
@@ -62,11 +60,5 @@ class CustomerImport < ApplicationRecord
 
       touch(:finalized_at)
     end
-  end
-
-  private
-
-  def parse_in_background
-    ParseCustomerImportJob.perform_later(self)
   end
 end

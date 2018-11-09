@@ -45,11 +45,13 @@ class CustomerImportsControllerTest < ActionDispatch::IntegrationTest
       csv_file.rewind
 
       customer_import.uploaded_file.attach(io: csv_file, filename: "upload.csv")
-      perform_enqueued_jobs { customer_import.save! }
+      customer_import.save!
     ensure
       csv_file.close
       csv_file.unlink
     end
+
+    customer_import.parse!
 
     assert_difference "space.customers.count", 2 do
       perform_enqueued_jobs do
