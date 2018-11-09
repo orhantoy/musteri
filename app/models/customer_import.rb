@@ -53,12 +53,13 @@ class CustomerImport < ApplicationRecord
   end
 
   def finalize!
-    transaction do
-      rows.each do |row|
+    valid_rows.each do |row|
+      transaction do
         space.customers.create!(row.as_customer_attributes)
+        row.touch(:finalized_at)
       end
-
-      touch(:finalized_at)
     end
+
+    touch(:finalized_at)
   end
 end
