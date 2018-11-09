@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CustomerImportsTest < ActiveSupport::TestCase
+class CustomerImportTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
   test "parsing rows" do
