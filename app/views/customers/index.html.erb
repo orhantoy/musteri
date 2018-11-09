@@ -3,3 +3,24 @@
 <p>
   <%= link_to "Import customers", new_app_customer_import_path %>
 </p>
+
+<table class="plain-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @customers.each do |customer| %>
+      <tr>
+        <td><%= customer.name %></td>
+        <td>
+          <%= customer.address %><br>
+          <%= customer.city %><br>
+          <%= customer.country_code %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

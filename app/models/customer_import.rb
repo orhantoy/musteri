@@ -59,6 +59,8 @@ class CustomerImport < ApplicationRecord
       rows.each do |row|
         space.customers.create!(row.as_customer_attributes)
       end
+
+      touch(:finalized_at)
     end
   end
 
