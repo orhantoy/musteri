@@ -35,6 +35,7 @@ class CustomerImport < ApplicationRecord
     return if parsed_at?
 
     csv_contents = uploaded_file.download
+    csv_contents.force_encoding("UTF-8")
 
     transaction do
       CSV.parse(csv_contents, headers: true) do |row_from_csv|

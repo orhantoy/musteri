@@ -10,7 +10,7 @@ class CustomerImportTest < ActiveSupport::TestCase
 
       CSV.open(csv_file.path, "wb") do |csv|
         csv << ["customer_name", "address", "city", "country_name", "country_code"]
-        csv << ["Shape A/S", "Njalsgade 17A", "Copenhagen", "", "dk"]
+        csv << ["Shape A/S", "Njalsgade 17A", "København S", "", "dk"]
         csv << ["", "-", "-", "", "dk"]
         csv << ["Duplicate Company", "", "", "", ""]
         csv << ["Duplicate Company", "", "", "", ""]
