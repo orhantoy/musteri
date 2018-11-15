@@ -27,6 +27,7 @@
       <th>Address</th>
       <th>User name</th>
       <th>User email</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -40,6 +41,13 @@
         </td>
         <td>-</td>
         <td>-</td>
+        <% if row.error_message %>
+          <td class="customer-import-row--error-cell">
+            <%= row.error_message.humanize %>
+          </td>
+        <% else %>
+          <td></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
