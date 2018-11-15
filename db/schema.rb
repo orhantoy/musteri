@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_08_220931) do
+ActiveRecord::Schema.define(version: 2018_11_15_142308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,8 @@ ActiveRecord::Schema.define(version: 2018_11_08_220931) do
     t.datetime "parsed_at"
     t.datetime "started_finalizing_at"
     t.datetime "finalized_at"
+    t.datetime "parsing_failed_at"
+    t.string "parsing_failure_message"
     t.index ["space_id"], name: "index_customer_imports_on_space_id"
   end
 

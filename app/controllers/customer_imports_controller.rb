@@ -16,14 +16,14 @@ class CustomerImportsController < ApplicationController
     case
     when @customer_import.started_finalizing_at? && !@customer_import.finalized_at?
       render :finalizing
-    when @customer_import.parsed_at?
+    when @customer_import.started_parsing_at? && !(@customer_import.parsed_at || @customer_import.parsing_failed_at)
+      render :parsing
+    else
       if params[:row_type].present?
         render
       else
         redirect_to url_for(row_type: "valid")
       end
-    else
-      render :parsing
     end
   end
 
