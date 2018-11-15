@@ -45,6 +45,8 @@
           <td class="customer-import-row--error-cell">
             <%= row.error_message.humanize %>
           </td>
+        <% elsif row.finalized_at? %>
+          <td>✅</td>
         <% else %>
           <td></td>
         <% end %>
