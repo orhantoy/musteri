@@ -29,6 +29,10 @@ class CustomerImportRow < ApplicationRecord
     parsed_data["user_email"]
   end
 
+  def user_name
+    parsed_data["user_name"]
+  end
+
   def country_name
     country.name
   end
