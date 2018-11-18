@@ -1,0 +1,4 @@
+<%= form_tag confirm_customer_membership_url do %>
+  <%= hidden_field_tag "secret_token", params[:secret_token] %>
+  <%= button_tag "Confirm" %>
+<% end %>

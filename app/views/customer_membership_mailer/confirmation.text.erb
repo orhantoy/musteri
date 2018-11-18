@@ -1,0 +1,6 @@
+Hey!
+
+You have been given access to <%= @customer.name %> on behalf of <%= @space.title %>.
+
+Click here to confirm your access:
+<%= confirm_customer_membership_url(membership_id: @customer_membership.id, secret_token: @customer_membership.confirmation_token) %>
