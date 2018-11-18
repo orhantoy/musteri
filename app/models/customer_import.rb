@@ -49,7 +49,14 @@ class CustomerImport < ApplicationRecord
   def finalize!
     valid_rows.each do |row|
       transaction do
-        space.customers.create!(row.as_customer_attributes)
+        customer = space.customers.create!(row.as_customer_attributes)
+
+        if row.user_email.present?
+          user = User.find_or_create_by!(email: row.user_email)
+
+          customer.memberships.create!(user: user)
+        end
+
         row.touch(:finalized_at)
       end
     end

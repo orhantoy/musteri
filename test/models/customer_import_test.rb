@@ -11,8 +11,8 @@ class CustomerImportTest < ActiveSupport::TestCase
       csv_file = Tempfile.new(["upload", ".csv"])
 
       CSV.open(csv_file.path, "wb") do |csv|
-        csv << ["customer_name", "address", "city", "country_name", "country_code"]
-        csv << ["Shape A/S", "Njalsgade 17A", "København S", "", "dk"]
+        csv << ["customer_name", "address", "city", "country_name", "country_code", "user_name", "user_email"]
+        csv << ["Shape A/S", "Njalsgade 17A", "København S", "", "dk", "Bacon", "bacon.the.dog@example.com"]
         csv << ["Farm Backup", "Njalsgade 23C", "Copenhagen", "", "dk"]
         csv << ["", "-", "-", "", "dk"]
         csv << ["Duplicate Company", "", "", "", ""]
@@ -47,8 +47,8 @@ class CustomerImportTest < ActiveSupport::TestCase
       csv_file = Tempfile.new(["upload", ".csv"])
 
       CSV.open(csv_file.path, "wb") do |csv|
-        csv << ["customer_name", "address", "city", "country_name", "country_code"]
-        csv << ["Shape A/S", "Njalsgade 17A", "Copenhagen", "", "dk"]
+        csv << ["customer_name", "address", "city", "country_name", "country_code", "user_name", "user_email"]
+        csv << ["Shape A/S", "Njalsgade 17A", "København S", "", "dk", "Bacon", "bacon.the.dog@example.com"]
         csv << ["", "-", "-", "", "dk"]
         csv << ["Duplicate Company", "", "", "", ""]
         csv << ["Duplicate Company", "", "", "", ""]
@@ -65,7 +65,7 @@ class CustomerImportTest < ActiveSupport::TestCase
 
     customer_import.parse!
 
-    assert_difference "space.customers.count", 2 do
+    assert_difference -> { space.customers.count } => 2, -> { space.users.count} => 1 do
       customer_import.finalize!
     end
   end
