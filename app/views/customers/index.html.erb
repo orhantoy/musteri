@@ -9,6 +9,7 @@
     <tr>
       <th>Name</th>
       <th>Address</th>
+      <th>Country</th>
     </tr>
   </thead>
   <tbody>
@@ -17,9 +18,9 @@
         <td><%= customer.name %></td>
         <td>
           <%= customer.address %><br>
-          <%= customer.city %><br>
-          <%= customer.country_code %>
+          <%= customer.city %>
         </td>
+        <td><%= customer.country_name %></td>
       </tr>
     <% end %>
   </tbody>
