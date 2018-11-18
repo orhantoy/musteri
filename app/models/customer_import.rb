@@ -52,7 +52,9 @@ class CustomerImport < ApplicationRecord
         customer = space.customers.create!(row.as_customer_attributes)
 
         if row.user_email_is_valid?
-          user = User.find_or_create_by!(email: row.user_email)
+          user = User.find_or_initialize_by(email: row.user_email)
+          user.name ||= row.user_name.presence
+          user.save!
 
           customer.memberships.create!(user: user)
         end
