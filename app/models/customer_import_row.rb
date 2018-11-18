@@ -19,8 +19,16 @@ class CustomerImportRow < ApplicationRecord
     parsed_data["city"]
   end
 
+  def country_code
+    parsed_data["country_code"]
+  end
+
+  def country_name
+    country.name
+  end
+
   def country
-    "-"
+    ISO3166::Country.new(country_code) if country_code.present?
   end
 
   def as_customer_attributes
@@ -28,7 +36,7 @@ class CustomerImportRow < ApplicationRecord
       name: parsed_data["customer_name"],
       address: parsed_data["address"],
       city: parsed_data["city"],
-      country_code: parsed_data["country_code"],
+      country_code: country ? country.alpha2 : nil,
     }
   end
 

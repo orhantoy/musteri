@@ -25,6 +25,7 @@
     <tr>
       <th>Company *</th>
       <th>Address</th>
+      <th>Country</th>
       <th>User name</th>
       <th>User email</th>
       <th></th>
@@ -36,8 +37,18 @@
         <td><%= row.customer_name %></td>
         <td>
           <%= row.address %><br>
-          <%= row.city %><br>
-          <%= row.country %>
+          <%= row.city %>
+        </td>
+        <td>
+          <% if row.country_code.present? %>
+            <% if row.country %>
+              <%= row.country_name %>
+            <% else %>
+              <em>Invalid country code</em>
+            <% end %>
+
+            (<%= row.country_code %>)
+          <% end %>
         </td>
         <td>-</td>
         <td>-</td>
