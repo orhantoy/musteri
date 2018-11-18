@@ -1,3 +1,5 @@
+require "uri"
+
 class CustomerImportRow < ApplicationRecord
   belongs_to :owner, class_name: "CustomerImport"
 
@@ -27,6 +29,10 @@ class CustomerImportRow < ApplicationRecord
 
   def user_email
     parsed_data["user_email"]
+  end
+
+  def user_email_is_valid?
+    user_email.present? && user_email =~ URI::MailTo::EMAIL_REGEXP
   end
 
   def user_name
