@@ -28,7 +28,7 @@ class CustomerImportRow < ApplicationRecord
   end
 
   def user_email
-    parsed_data["user_email"]
+    parsed_data["user_email"].try(:downcase)
   end
 
   def user_email_is_valid?
