@@ -32,11 +32,11 @@ class CustomerImportTest < ActiveSupport::TestCase
 
     assert_equal 5, customer_import.rows.count
     assert_equal 1, customer_import.rows_with_errors.count
-    assert_equal 3, customer_import.rows_with_duplicates.count
-    assert_equal 1, customer_import.valid_rows.count
+    assert_equal 2, customer_import.rows_with_duplicates.count
+    assert_equal 2, customer_import.valid_rows.count
 
     assert_equal ["blank_name"], customer_import.rows_with_errors.pluck(:error_message)
-    assert_equal ["customer_already_exists", "duplicate_in_file", "duplicate_in_file"], customer_import.rows_with_duplicates.order(:id).pluck(:error_message)
+    assert_equal ["customer_already_exists", "duplicate_in_file"], customer_import.rows_with_duplicates.order(:id).pluck(:error_message)
   end
 
   test "finalizing import" do
@@ -65,7 +65,7 @@ class CustomerImportTest < ActiveSupport::TestCase
 
     customer_import.parse!
 
-    assert_difference "space.customers.count", 1 do
+    assert_difference "space.customers.count", 2 do
       customer_import.finalize!
     end
   end

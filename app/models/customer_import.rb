@@ -42,14 +42,6 @@ class CustomerImport < ApplicationRecord
         rows.create!(parsed_data: row_from_csv.to_hash)
       end
 
-      all_customer_names = rows.map { |row| row.parsed_data["customer_name"] }
-      duplicate_customer_names = all_customer_names.detect { |customer_name| all_customer_names.count(customer_name) > 1 }
-
-      rows
-        .where("parsed_data->>'customer_name' IN (?)", duplicate_customer_names)
-        .where(with_errors: false)
-        .update_all(duplicated: true, error_message: "duplicate_in_file")
-
       touch(:parsed_at)
     end
   end
