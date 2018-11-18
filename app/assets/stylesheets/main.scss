@@ -42,6 +42,18 @@ a {
   font-weight: bold;
 }
 
+.customer-import--row-type-link {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.customer-import--row-type-link.selected {
+  border-color: #333;
+  background-color: #eee;
+}
+
 /*
 
 Source: https://gist.github.com/christopheranderton/4c88326ab6a5604acc29

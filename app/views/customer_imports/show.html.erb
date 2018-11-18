@@ -4,14 +4,20 @@
 
 <p>
   <% if @customer_import.rows_with_errors.count > 0 %>
-    <%= link_to "Errors", url_for(row_type: "errors") %> (<%= @customer_import.rows_with_errors.count %>)
+    <%= content_tag(:span, class: ["customer-import--row-type-link", params[:row_type] == "errors" ? "selected" : "unselected"]) do %>
+      <%= link_to "Errors", url_for(row_type: "errors") %> (<%= @customer_import.rows_with_errors.count %>)
+    <% end %>
   <% end %>
 
   <% if @customer_import.rows_with_duplicates.count > 0 %>
-    <%= link_to "Duplicates", url_for(row_type: "duplicates") %> (<%= @customer_import.rows_with_duplicates.count %>)
+    <%= content_tag(:span, class: ["customer-import--row-type-link", params[:row_type] == "duplicates" ? "selected" : "unselected"]) do %>
+      <%= link_to "Duplicates", url_for(row_type: "duplicates") %> (<%= @customer_import.rows_with_duplicates.count %>)
+    <% end %>
   <% end %>
 
-  <%= link_to "Valid data", url_for(row_type: "valid") %> (<%= @customer_import.valid_rows.count %>)
+  <%= content_tag(:span, class: ["customer-import--row-type-link", params[:row_type] == "valid" ? "selected" : "unselected"]) do %>
+    <%= link_to "Valid data", url_for(row_type: "valid") %> (<%= @customer_import.valid_rows.count %>)
+  <% end %>
 </p>
 
 <% if @customer_import.started_finalizing_at.nil? && @customer_import.finalized_at.nil? %>
