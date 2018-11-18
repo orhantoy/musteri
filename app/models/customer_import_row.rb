@@ -2,6 +2,7 @@ class CustomerImportRow < ApplicationRecord
   belongs_to :owner, class_name: "CustomerImport"
 
   before_create :check_for_errors
+  before_create :check_for_duplicate_persisted_customers
 
   scope :with_errors, -> { where(with_errors: true) }
   scope :duplicated, -> { where(duplicated: true) }
@@ -46,6 +47,19 @@ class CustomerImportRow < ApplicationRecord
     if parsed_data["customer_name"].blank?
       self.with_errors = true
       self.error_message ||= "blank_name"
+    end
+
+    true
+  end
+
+  def check_for_duplicate_persisted_customers
+    if customer_name.present?
+      existing_customer_with_same_name = owner.space.customers.find_by_name(customer_name)
+
+      if existing_customer_with_same_name
+        self.duplicated = true
+        self.error_message ||= "customer_already_exists"
+      end
     end
 
     true
