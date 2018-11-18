@@ -20,11 +20,13 @@ class CustomerMembershipConfirmationsControllerTest < ActionDispatch::Integratio
 
     membership.reload
     refute membership.confirmed?
+    refute membership.user.password_digest.present?
 
-    post confirm_customer_membership_url(membership_id: membership.id), params: { secret_token: membership.confirmation_token }
+    post confirm_customer_membership_url(membership_id: membership.id), params: { secret_token: membership.confirmation_token, user_password: "password", user_password_confirmation: "password" }
 
     membership.reload
     assert membership.confirmed?
+    assert membership.user.authenticate("password")
 
     assert_response :redirect
     follow_redirect!

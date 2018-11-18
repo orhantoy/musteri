@@ -9,8 +9,19 @@ class CustomerMembershipConfirmationsController < ApplicationController
     @membership = CustomerMembership.find_by(id: params[:membership_id], confirmation_token: String(params[:secret_token]))
 
     if @membership
-      @membership.update!(confirmed_at: Time.zone.now, confirmation_token: nil)
-      redirect_to url_for(action: "success")
+      if params[:user_password]
+        @membership.user.password = params[:user_password]
+        @membership.user.password_confirmation = String(params[:user_password_confirmation])
+      end
+
+      @membership.confirmed_at = Time.zone.now
+      @membership.confirmation_token = nil
+
+      if @membership.user.save && @membership.save
+        redirect_to url_for(action: "success")
+      else
+        render :new
+      end
     else
       redirect_to url_for(action: "success")
     end

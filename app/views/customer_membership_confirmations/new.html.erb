@@ -1,4 +1,12 @@
 <%= form_tag confirm_customer_membership_url do %>
   <%= hidden_field_tag "secret_token", params[:secret_token] %>
-  <%= button_tag "Confirm" %>
+
+  <% if @membership.nil? || @membership.user.password_digest.blank? %>
+    Password: <%= password_field_tag "user_password" %>
+    Password, again: <%= password_field_tag "user_password_confirmation" %>
+
+    <%= button_tag "Set password and confirm access" %>
+  <% else %>
+    <%= button_tag "Confirm" %>
+  <% end %>
 <% end %>
