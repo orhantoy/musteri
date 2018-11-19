@@ -1,0 +1,40 @@
+<p><%= link_to "&larr; Back".html_safe, app_path %> to list of customers.</p>
+
+<h1><%= @customer.name %></h1>
+
+<h2>Address</h2>
+
+<p>
+  <%= @customer.address %><br>
+  <%= @customer.city %><br>
+  <%= @customer.country_name %>
+</p>
+
+<h2>Users</h2>
+
+<% if @customer.memberships.size.positive? %>
+  <table class="plain-table">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Confirmation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @customer.memberships.order(:id).each do |membership| %>
+        <tr>
+          <td><%= membership.user.name %> &mdash; <%= membership.user.email %></td>
+          <td>
+            <% if membership.confirmed? %>
+              Confirmed <%= l membership.confirmed_at, format: :short %>
+            <% else %>
+              <em>Awaiting confirmation</em>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>There are no users for this customer.</p>
+<% end %>

@@ -1,6 +1,14 @@
 <p><%= link_to "&larr; Back".html_safe, app_path %> to list of customers.</p>
 
-<h1>Importing <code><%= @customer_import.uploaded_file.filename %></code></h1>
+<h1>
+  <% if @customer_import.can_be_finalized? %>
+    Importing
+  <% else %>
+    Imported
+  <% end %>
+
+  <code><%= @customer_import.uploaded_file.filename %></code>
+</h1>
 
 <p>
   <% if @customer_import.rows_with_errors.count > 0 %>
@@ -20,9 +28,11 @@
   <% end %>
 </p>
 
-<% if @customer_import.started_finalizing_at.nil? && @customer_import.finalized_at.nil? %>
-  <div class="mv1">
-    <%= button_to("Complete importing customers", url_for(action: "finalize"), method: :post) %>
+<% if @customer_import.can_be_finalized? %>
+  <div class="mv1 btn-bg">
+    Seems OK?
+    <%= button_to("Press here", url_for(action: "finalize"), method: :post, class: "btn") %>
+    to create customers.
   </div>
 <% end %>
 
@@ -39,7 +49,9 @@
   <tbody>
     <% @rows.each do |row| %>
       <tr>
-        <td><%= row.customer_name %></td>
+        <td>
+          <%= row.customer_name || content_tag(:em, "Blank name") %>
+        </td>
         <td>
           <%= row.address %><br>
           <%= row.city %>

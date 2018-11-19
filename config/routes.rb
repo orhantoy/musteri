@@ -17,5 +17,7 @@ Rails.application.routes.draw do
     end
 
     resources :customer_import_rows, only: [:update, :destroy]
+
+    resources :customers, only: [:index, :show]
   end
 end

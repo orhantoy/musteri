@@ -12,7 +12,7 @@ class CustomerImportRow < ApplicationRecord
   scope :valid, -> { where(duplicated: false, with_errors: false) }
 
   def customer_name
-    parsed_data["customer_name"]
+    parsed_data["customer_name"].presence
   end
 
   def address

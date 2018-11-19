@@ -31,6 +31,10 @@ class CustomerImport < ApplicationRecord
     end
   end
 
+  def can_be_finalized?
+    started_finalizing_at.nil? && finalized_at.nil?
+  end
+
   def parse!
     return if parsed_at?
 
