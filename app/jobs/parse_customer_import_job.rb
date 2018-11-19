@@ -1,5 +1,5 @@
 class ParseCustomerImportJob < ApplicationJob
-  before_enqueue do |job|
+  after_enqueue do |job|
     job.arguments.first.touch(:started_parsing_at)
   end
 

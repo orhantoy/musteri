@@ -1,5 +1,5 @@
 class FinalizeCustomerImportJob < ApplicationJob
-  before_enqueue do |job|
+  after_enqueue do |job|
     job.arguments.first.touch(:started_finalizing_at)
   end
 
