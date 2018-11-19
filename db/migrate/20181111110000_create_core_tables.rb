@@ -23,6 +23,8 @@ class CreateCoreTables < ActiveRecord::Migration[5.2]
       t.references :space, null: false
       t.datetime :started_parsing_at
       t.datetime :parsed_at
+      t.datetime :parsing_failed_at
+      t.string :parsing_failure_message
       t.datetime :started_finalizing_at
       t.datetime :finalized_at
     end
@@ -36,6 +38,21 @@ class CreateCoreTables < ActiveRecord::Migration[5.2]
       t.boolean :duplicated, null: false, default: false
       t.string :error_message
       t.datetime :finalized_at
+    end
+
+    create_table :users do |t|
+      t.timestamps null: false
+      t.string :email, null: false, index: { unique: true }
+      t.string :name
+      t.string :password_digest
+    end
+
+    create_table :customer_memberships do |t|
+      t.datetime :created_at, null: false
+      t.references :user, null: false
+      t.references :customer, null: false
+      t.string :confirmation_token
+      t.datetime :confirmed_at
     end
   end
 end
