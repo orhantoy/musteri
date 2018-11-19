@@ -1,6 +1,5 @@
 class CustomerImportsController < ApplicationController
-  def new
-  end
+  def new; end
 
   def create
     customer_import = current_space.customer_imports.create!(uploaded_file: params[:import_file])
@@ -12,19 +11,15 @@ class CustomerImportsController < ApplicationController
   def show
     @customer_import = current_space.customer_imports.find(params[:id])
 
-    case
-    when @customer_import.parsing?
+    if @customer_import.parsing?
       render :parsing
-    when @customer_import.finalizing?
+    elsif @customer_import.finalizing?
       render :finalizing
+    elsif params[:row_type].present?
+      @rows = @customer_import.rows_of_type(params[:row_type])
+      render
     else
-      if params[:row_type].present?
-        @rows = @customer_import.rows_of_type(params[:row_type])
-
-        render
-      else
-        redirect_to url_for(row_type: "valid")
-      end
+      redirect_to url_for(row_type: "valid")
     end
   end
 

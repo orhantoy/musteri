@@ -8,20 +8,10 @@ class CustomerMembershipConfirmationsController < ApplicationController
   def create
     @membership = CustomerMembership.find_by(id: params[:membership_id], confirmation_token: String(params[:secret_token]))
 
-    if @membership
-      if params[:user_password]
-        @membership.user.password = params[:user_password]
-        @membership.user.password_confirmation = String(params[:user_password_confirmation])
-      end
-
-      @membership.confirmed_at = Time.zone.now
-      @membership.confirmation_token = nil
-
-      if @membership.user.save && @membership.save
-        redirect_to url_for(action: "success")
-      else
-        render :new
-      end
+    if @membership && @membership.confirm(confirmation_args)
+      redirect_to url_for(action: "success")
+    elsif @membership
+      render :new
     else
       redirect_to url_for(action: "error")
     end
@@ -32,4 +22,13 @@ class CustomerMembershipConfirmationsController < ApplicationController
 
   # GET /confirm/:membership_id/error
   def error; end
+
+  private
+
+  def confirmation_args
+    {
+      user_password: params[:user_password],
+      user_password_confirmation: params[:user_password_confirmation],
+    }
+  end
 end
