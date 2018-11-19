@@ -2,7 +2,7 @@
 
 (*Müşteri* means customer in Turkish.)
 
-A lot of applications deal with importing customers and/or users from other systems, usually by uploading a tabular file like CSV. I made a test assignment for job applicants at a previous job about this specific need. This codebase is an illustration of how I would do it.
+A lot of applications deal with importing customers and/or users from other systems, usually by uploading a tabular file like CSV. I made a test assignment for job applicants at a previous job about this specific need. This codebase is an illustration of how I would implement it with Rails.
 
 ## Concepts
 
@@ -26,7 +26,6 @@ There is nothing special about this Rails app. If you have PostgreSQL installed 
 
 ```
 ./bin/setup
-
 rails test # Tests should be passing
 rails server
 ```
