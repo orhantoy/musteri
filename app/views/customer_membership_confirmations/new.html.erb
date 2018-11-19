@@ -1,12 +1,22 @@
+<h1>Confirmation</h1>
+
 <%= form_tag confirm_customer_membership_url do %>
   <%= hidden_field_tag "secret_token", params[:secret_token] %>
 
   <% if @membership.nil? || @membership.user.password_digest.blank? %>
-    Password: <%= password_field_tag "user_password" %>
-    Password, again: <%= password_field_tag "user_password_confirmation" %>
+    <div class="mv1">
+      <div class="password-input-container">
+        <%= label_tag "user_password", "Choose password" %><br>
+        <%= password_field_tag "user_password" %>
+      </div>
+      <div class="password-input-container">
+        <%= label_tag "user_password_confirmation", "Repeat password" %><br>
+        <%= password_field_tag "user_password_confirmation" %>
+      </div>
+    </div>
 
-    <%= button_tag "Set password and confirm access" %>
+    <%= button_tag "Set password and confirm access", class: "btn" %>
   <% else %>
-    <%= button_tag "Confirm" %>
+    <%= button_tag "Confirm", class: "btn" %>
   <% end %>
 <% end %>

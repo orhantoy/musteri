@@ -81,6 +81,24 @@ form.button_to {
   border-color: #4078c0;
 }
 
+.password-input-container {
+  display: inline-block;
+  margin-right: 12px;
+
+  label {
+    color: #666;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+
+  input {
+    font-size: 18px;
+    width: 200px;
+    padding: 6px;
+    margin: 0;
+  }
+}
+
 /*
 
 Source: https://gist.github.com/christopheranderton/4c88326ab6a5604acc29
