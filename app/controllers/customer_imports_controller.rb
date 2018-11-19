@@ -2,6 +2,11 @@ class CustomerImportsController < ApplicationController
   def new; end
 
   def create
+    if params[:import_file].blank?
+      redirect_to url_for(action: "new")
+      return
+    end
+
     customer_import = current_space.customer_imports.create!(uploaded_file: params[:import_file])
     ParseCustomerImportJob.perform_later(customer_import)
 
