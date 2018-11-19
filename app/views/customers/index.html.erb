@@ -1,0 +1,27 @@
+<h1>Customers</h1>
+
+<p class="mv1">
+  <%= link_to "Import customers", new_app_customer_import_path, class: "btn" %>
+</p>
+
+<table class="plain-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @customers.each do |customer| %>
+      <tr>
+        <td><%= link_to customer.name, url_for(controller: "customers", action: "show", id: customer.id) %></td>
+        <td>
+          <%= customer.address %><br>
+          <%= customer.city %>
+        </td>
+        <td><%= customer.country_name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,87 @@
+<p><%= link_to "&larr; Back".html_safe, app_path %> to list of customers.</p>
+
+<h1>
+  <% if @customer_import.can_be_finalized? %>
+    Importing
+  <% else %>
+    Imported
+  <% end %>
+
+  <code><%= @customer_import.uploaded_file.filename %></code>
+</h1>
+
+<p>
+  <% if @customer_import.rows_with_errors.count > 0 %>
+    <%= content_tag(:span, class: ["customer-import--row-type-link", params[:row_type] == "errors" ? "selected" : "unselected"]) do %>
+      <%= link_to "Errors", url_for(row_type: "errors") %> (<%= @customer_import.rows_with_errors.count %>)
+    <% end %>
+  <% end %>
+
+  <% if @customer_import.rows_with_duplicates.count > 0 %>
+    <%= content_tag(:span, class: ["customer-import--row-type-link", params[:row_type] == "duplicates" ? "selected" : "unselected"]) do %>
+      <%= link_to "Duplicates", url_for(row_type: "duplicates") %> (<%= @customer_import.rows_with_duplicates.count %>)
+    <% end %>
+  <% end %>
+
+  <%= content_tag(:span, class: ["customer-import--row-type-link", params[:row_type] == "valid" ? "selected" : "unselected"]) do %>
+    <%= link_to "Valid data", url_for(row_type: "valid") %> (<%= @customer_import.valid_rows.count %>)
+  <% end %>
+</p>
+
+<% if @customer_import.can_be_finalized? %>
+  <div class="mv1 btn-bg">
+    Seems OK?
+    <%= button_to("Press here", url_for(action: "finalize"), method: :post, class: "btn") %>
+    to create customers.
+  </div>
+<% end %>
+
+<table class="plain-table" width="100%">
+  <thead>
+    <tr>
+      <th width="20%">Company *</th>
+      <th width="20%">Address</th>
+      <th width="20%">Country</th>
+      <th width="25%">User</th>
+      <th width="15%"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @rows.each do |row| %>
+      <tr>
+        <td>
+          <%= row.customer_name || content_tag(:em, "Blank name") %>
+        </td>
+        <td>
+          <%= row.address %><br>
+          <%= row.city %>
+        </td>
+        <td>
+          <% if row.country_code.present? %>
+            <% if row.country %>
+              <%= row.country_name %>
+            <% else %>
+              <em>Invalid country code</em>
+            <% end %>
+
+            (<%= row.country_code %>)
+          <% end %>
+        </td>
+        <td>
+          <%= row.user_name %>
+          &mdash;
+          <%= row.user_email %>
+        </td>
+        <% if row.error_message %>
+          <td class="customer-import-row--error-cell">
+            <%= row.error_message.humanize %>
+          </td>
+        <% elsif row.finalized_at? %>
+          <td>✅</td>
+        <% else %>
+          <td></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

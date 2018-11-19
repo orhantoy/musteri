@@ -1,0 +1,7 @@
+<% content_for :head do %>
+  <meta http-equiv="refresh" content="1">
+<% end %>
+
+<p><%= link_to "&larr; Back".html_safe, app_path %> to list of customers.</p>
+
+<h1>Completing <code><%= @customer_import.uploaded_file.filename %></code></h1>

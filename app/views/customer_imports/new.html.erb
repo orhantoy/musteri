@@ -1,0 +1,8 @@
+<p><%= link_to "&larr; Back".html_safe, app_path %> to list of customers.</p>
+
+<h1>Import Customers</h1>
+
+<%= form_tag app_customer_imports_path, method: :post, multipart: true do %>
+  <%= file_field_tag "import_file" %>
+  <%= submit_tag "Import" %>
+<% end %>
