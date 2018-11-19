@@ -23,7 +23,7 @@ class CustomerMembershipConfirmationsController < ApplicationController
         render :new
       end
     else
-      redirect_to url_for(action: "success")
+      redirect_to url_for(action: "error")
     end
   end
 
