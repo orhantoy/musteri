@@ -11,15 +11,16 @@ class CustomerImportsController < ApplicationController
 
   def show
     @customer_import = current_space.customer_imports.find(params[:id])
-    @rows = @customer_import.rows_of_type(params[:row_type])
 
     case
-    when @customer_import.started_finalizing_at? && !@customer_import.finalized_at?
-      render :finalizing
-    when @customer_import.started_parsing_at? && !(@customer_import.parsed_at || @customer_import.parsing_failed_at)
+    when @customer_import.parsing?
       render :parsing
+    when @customer_import.finalizing?
+      render :finalizing
     else
       if params[:row_type].present?
+        @rows = @customer_import.rows_of_type(params[:row_type])
+
         render
       else
         redirect_to url_for(row_type: "valid")

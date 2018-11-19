@@ -6,6 +6,14 @@ class CustomerImport < ApplicationRecord
 
   has_one_attached :uploaded_file
 
+  def parsing?
+    started_parsing_at? && !(parsed_at? || parsing_failed_at?)
+  end
+
+  def finalizing?
+    started_finalizing_at? && !finalized_at?
+  end
+
   def rows_with_errors
     rows.with_errors
   end
