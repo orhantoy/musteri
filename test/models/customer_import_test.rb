@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'csv'
 
 class CustomerImportTest < ActiveSupport::TestCase
   test "parsing rows" do
