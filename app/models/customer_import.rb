@@ -14,6 +14,10 @@ class CustomerImport < ApplicationRecord
     started_finalizing_at? && !finalized_at?
   end
 
+  def parsing_failed?
+    parsing_failed_at?
+  end
+
   def rows_with_errors
     rows.with_errors
   end

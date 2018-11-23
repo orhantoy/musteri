@@ -1,0 +1,7 @@
+<p><%= link_to "&larr; Back".html_safe, app_path %> to list of customers.</p>
+
+<h1>Error</h1>
+
+<p>A problem occurred while parsing <code><%= @customer_import.uploaded_file.filename %></code>.</p>
+
+<p><strong>Error message:</strong> <%= @customer_import.parsing_failure_message %></p>

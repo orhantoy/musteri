@@ -20,6 +20,8 @@ class CustomerImportsController < ApplicationController
       render :parsing
     elsif @customer_import.finalizing?
       render :finalizing
+    elsif @customer_import.parsing_failed?
+      render :parsing_failed
     elsif params[:row_type].present?
       @rows = @customer_import.rows_of_type(params[:row_type])
       render
