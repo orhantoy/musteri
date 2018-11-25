@@ -1,0 +1,32 @@
+<p><%= link_to "&larr; Back".html_safe, app_path %> to list of customers.</p>
+
+<h1>Header of <code><%= @customer_import.uploaded_file.filename %></code></h1>
+
+<%= form_tag url_for(action: "save_header_mapping"), method: :post do %>
+  <table class="plain-table">
+    <thead>
+      <tr>
+        <th>Customer name</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>Country code</th>
+        <th>User name</th>
+        <th>User email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= select_tag "mapping[customer_name]", options_from_collection_for_select(@customer_import.header_columns, "index", "name"), include_blank: true, id: nil %></td>
+        <td><%= select_tag "mapping[address]", options_from_collection_for_select(@customer_import.header_columns, "index", "name"), include_blank: true, id: nil %></td>
+        <td><%= select_tag "mapping[city]", options_from_collection_for_select(@customer_import.header_columns, "index", "name"), include_blank: true, id: nil %></td>
+        <td><%= select_tag "mapping[country_code]", options_from_collection_for_select(@customer_import.header_columns, "index", "name"), include_blank: true, id: nil %></td>
+        <td><%= select_tag "mapping[user_name]", options_from_collection_for_select(@customer_import.header_columns, "index", "name"), include_blank: true, id: nil %></td>
+        <td><%= select_tag "mapping[user_email]", options_from_collection_for_select(@customer_import.header_columns, "index", "name"), include_blank: true, id: nil %></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="mv1">
+    <%= button_tag "Continue", class: "btn" %> with the selected columns
+  </div>
+<% end %>

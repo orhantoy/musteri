@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_11_110000) do
+ActiveRecord::Schema.define(version: 2018_11_23_052441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 2018_11_11_110000) do
     t.boolean "duplicated", default: false, null: false
     t.string "error_message"
     t.datetime "finalized_at"
+    t.json "cell_data"
     t.index ["owner_id"], name: "index_customer_import_rows_on_owner_id"
   end
 
@@ -58,6 +59,9 @@ ActiveRecord::Schema.define(version: 2018_11_11_110000) do
     t.string "parsing_failure_message"
     t.datetime "started_finalizing_at"
     t.datetime "finalized_at"
+    t.datetime "started_parsing_header_at"
+    t.datetime "parsed_header_at"
+    t.json "header_data"
     t.index ["space_id"], name: "index_customer_imports_on_space_id"
   end
 

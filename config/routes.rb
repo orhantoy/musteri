@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     get "/", to: "customers#index"
 
     resources :customer_imports, only: [:new, :create, :show] do
+      post :save_header_mapping, on: :member
       post :finalize, on: :member
       post :cancel, on: :member
     end

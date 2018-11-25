@@ -40,6 +40,37 @@ class CustomerImportTest < ActiveSupport::TestCase
     assert_equal ["customer_already_exists", "duplicate_in_file"], customer_import.rows_with_duplicates.order(:id).pluck(:error_message)
   end
 
+  test "parsing rows with dynamic columns" do
+    space = Space.create!(title: "Zeobix", slug: "ZBX")
+
+    csv_headers = ["Kunde", "Adresse", "By", "Land", "Brugerens fulde navn", "Bruger-email"]
+
+    csv_contents = ""
+    CSV.generate(csv_contents, headers: csv_headers, write_headers: true) do |csv|
+      csv << ["Shape A/S", "Njalsgade 17A", "København S", "dk", "Bacon", "bacon.the.dog@example.com"]
+      csv << ["Farm Backup", "Njalsgade 23C", "Copenhagen", "dk"]
+      csv << ["Duplicate Company", "", "", "", ""]
+      csv << ["Duplicate Company", "", "", "", ""]
+    end
+
+    csv_file = StringIO.new(csv_contents)
+
+    customer_import = space.customer_imports.new
+    customer_import.uploaded_file.attach(io: csv_file, filename: "upload.csv")
+    customer_import.header_data = {
+      "as_array" => csv_headers,
+      "index_mapping" => { "customer_name" => 0, "address" => 1, "city" => 2, "country_code" => 3, "user_name" => 4, "user_email" => 5 },
+    }
+    customer_import.save!
+
+    customer_import.parse_with_dynamic_headers!
+
+    assert_equal 4, customer_import.rows.count
+    assert_equal 0, customer_import.rows_with_errors.count
+    assert_equal 1, customer_import.rows_with_duplicates.count
+    assert_equal 3, customer_import.valid_rows.count
+  end
+
   test "finalizing import" do
     space = Space.create!(title: "Zeobix", slug: "ZBX")
     customer_import = space.customer_imports.new

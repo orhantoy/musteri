@@ -14,7 +14,7 @@ A lot of applications deal with importing customers and/or users from other syst
 
 - CSV must be delimited with comma `,` and UTF-8 encoded.
 - Only CSV is supported.
-- CSV file must have a header row with hard-coded column names.
+- First line in CSV file is always regarded as header.
 
 ## Improvements
 

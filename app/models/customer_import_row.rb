@@ -12,23 +12,23 @@ class CustomerImportRow < ApplicationRecord
   scope :valid, -> { where(duplicated: false, with_errors: false) }
 
   def customer_name
-    parsed_data["customer_name"].presence
+    read_value_from_column("customer_name").presence
   end
 
   def address
-    parsed_data["address"]
+    read_value_from_column("address")
   end
 
   def city
-    parsed_data["city"]
+    read_value_from_column("city")
   end
 
   def country_code
-    parsed_data["country_code"]
+    read_value_from_column("country_code")
   end
 
   def user_email
-    parsed_data["user_email"].try(:downcase)
+    read_value_from_column("user_email").try(:downcase)
   end
 
   def user_email_is_valid?
@@ -36,7 +36,7 @@ class CustomerImportRow < ApplicationRecord
   end
 
   def user_name
-    parsed_data["user_name"]
+    read_value_from_column("user_name")
   end
 
   def country_name
@@ -49,17 +49,30 @@ class CustomerImportRow < ApplicationRecord
 
   def as_customer_attributes
     {
-      name: parsed_data["customer_name"],
-      address: parsed_data["address"],
-      city: parsed_data["city"],
+      name: customer_name,
+      address: address,
+      city: city,
       country_code: country ? country.alpha2 : nil,
     }
   end
 
   private
 
+  def read_value_from_column(column)
+    if owner.header_data
+      index = header_index_for(column)
+      index ? cell_data[index] : nil
+    else
+      parsed_data[column]
+    end
+  end
+
+  def header_index_for(column)
+    owner.header_data["index_mapping"][column]
+  end
+
   def check_for_errors
-    if parsed_data["customer_name"].blank?
+    if customer_name.blank?
       self.with_errors = true
       self.error_message ||= "blank_name"
     end
@@ -69,7 +82,13 @@ class CustomerImportRow < ApplicationRecord
 
   def check_for_duplicate_in_file
     if customer_name.present?
-      existing_row_with_same_customer_name = owner.rows.where("parsed_data->>'customer_name' = ?", customer_name).first
+      existing_row_with_same_customer_name =
+        if owner.header_data
+          index = header_index_for("customer_name")
+          index ? owner.rows.where("cell_data->>#{index} = ?", customer_name).first : nil
+        else
+          owner.rows.where("parsed_data->>'customer_name' = ?", customer_name).first
+        end
 
       if existing_row_with_same_customer_name
         self.duplicated = true
