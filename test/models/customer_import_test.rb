@@ -97,7 +97,7 @@ class CustomerImportTest < ActiveSupport::TestCase
 
     customer_import.parse!
 
-    assert_difference -> { space.customers.count } => 2, -> { space.users.count} => 1 do
+    assert_difference -> { space.customers.count } => 2, -> { space.users.count } => 1 do
       customer_import.finalize!
     end
   end
