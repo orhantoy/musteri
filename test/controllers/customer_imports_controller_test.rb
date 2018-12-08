@@ -33,11 +33,13 @@ class CustomerImportsControllerTest < ActionDispatch::IntegrationTest
     space = Space.create!(title: "Zeobix", slug: "ZBX")
     customer_import = space.customer_imports.new
 
+    csv_headers = ["customer_name", "address", "city", "country_name", "country_code"]
+
     begin
       csv_file = Tempfile.new(["upload", ".csv"])
 
       CSV.open(csv_file.path, "wb") do |csv|
-        csv << ["customer_name", "address", "city", "country_name", "country_code"]
+        csv << csv_headers
         csv << ["Shape A/S", "Njalsgade 17A", "Copenhagen", "", "dk"]
         csv << ["Devotus", "", "Hvidovre", "", "dk"]
       end
@@ -51,7 +53,13 @@ class CustomerImportsControllerTest < ActionDispatch::IntegrationTest
       csv_file.unlink
     end
 
-    customer_import.parse!
+    customer_import.header_data = {
+      "as_array" => csv_headers,
+      "index_mapping" => { "customer_name" => 0, "address" => 1, "city" => 2, "country_code" => 4 },
+    }
+    customer_import.save!
+
+    customer_import.parse_with_dynamic_headers!
 
     assert_difference "space.customers.count", 2 do
       perform_enqueued_jobs do

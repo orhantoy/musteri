@@ -59,12 +59,8 @@ class CustomerImportRow < ApplicationRecord
   private
 
   def read_value_from_column(column)
-    if owner.header_data
-      index = header_index_for(column)
-      index ? cell_data[index] : nil
-    else
-      parsed_data[column]
-    end
+    index = header_index_for(column)
+    index ? cell_data[index] : nil
   end
 
   def header_index_for(column)
@@ -82,13 +78,8 @@ class CustomerImportRow < ApplicationRecord
 
   def check_for_duplicate_in_file
     if customer_name.present?
-      existing_row_with_same_customer_name =
-        if owner.header_data
-          index = header_index_for("customer_name")
-          index ? owner.rows.where("cell_data->>#{index} = ?", customer_name).first : nil
-        else
-          owner.rows.where("parsed_data->>'customer_name' = ?", customer_name).first
-        end
+      index_of_customer_name = header_index_for("customer_name")
+      existing_row_with_same_customer_name = owner.rows.where("cell_data->>#{index_of_customer_name} = ?", customer_name).first
 
       if existing_row_with_same_customer_name
         self.duplicated = true

@@ -61,21 +61,6 @@ class CustomerImport < ApplicationRecord
     started_finalizing_at.nil? && finalized_at.nil?
   end
 
-  def parse!
-    return if parsed_at?
-
-    csv_contents = uploaded_file.download
-    csv_contents.force_encoding("UTF-8")
-
-    transaction do
-      CSV.parse(csv_contents, headers: true) do |row_from_csv|
-        rows.create!(parsed_data: row_from_csv.to_hash)
-      end
-
-      touch(:parsed_at)
-    end
-  end
-
   def parse_header!
     return if parsed_header_at?
 
